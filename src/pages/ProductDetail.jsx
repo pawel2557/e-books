@@ -1,12 +1,14 @@
 import { useProducts } from "../hooks/useProducts"
 import { useParams } from "react-router-dom";
+import { useTitle } from "../hooks/useTitle";
 
 export const ProductDetail = () => {
   const { id } = useParams();
   const { products, loading } = useProducts(`SELECT * FROM products WHERE id = ${id}`);
   const product = products[0];
+   useTitle(product ? `${product.name}` : "Loading...");
   if (loading || !product) return <div>Loading...</div>;
-  console.log(product);
+  
   return (
     <main>
         <section>

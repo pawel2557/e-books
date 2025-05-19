@@ -2,9 +2,19 @@ import { useState } from "react";
 import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
 import { useProducts } from "../../hooks/useProducts";
+import { useLocation } from "react-router-dom";
+import { useTitle } from "../../hooks/useTitle";
 export const ProductsList = () => {
+  useTitle("Explore E-Books collection ");
+  const search = useLocation().search;
+  const searchTerm = new URLSearchParams(search).get("q");
+  console.log(searchTerm);
+  let query = "SELECT * FROM products";
+  if(searchTerm){
+    query = `SELECT * FROM products WHERE name ILIKE '%${searchTerm}%'`;
+  }
   const [show, setShow] = useState(false);
-  const { products, loading } = useProducts("SELECT * FROM products");
+  const { products, loading } = useProducts(query);
   return (
     <main>
       <section className="my-5">
