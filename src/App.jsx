@@ -1,9 +1,13 @@
+import { AllRoutes } from './routes/AllRoutes';
+import { Footer, Header } from './components';
 import './App.css';
 
 function App() {
   return (
-    <div className="App bg-red-500">
-      <h1>Hello World</h1>
+    <div className="App">
+      <Header></Header>
+      <AllRoutes></AllRoutes>
+      <Footer></Footer>
     </div>
   );
 }
