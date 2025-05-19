@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { ProductCard } from "../../../components/Elements/ProductCard";
+
+import { ProductCard } from "../../../components";
 import { useProducts } from "../../../hooks/useProducts";
 export const FeaturedProducts = () => {
   const { products, loading } = useProducts("SELECT * FROM products WHERE id IN (SELECT id FROM featured_products)");

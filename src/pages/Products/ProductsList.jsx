@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { ProductCard } from "../../components/Elements/ProductCard";
+import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
 import { useProducts } from "../../hooks/useProducts";
-import { useEffect } from "react";
 export const ProductsList = () => {
   const [show, setShow] = useState(false);
   const { products, loading } = useProducts("SELECT * FROM products");

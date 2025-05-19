@@ -18,10 +18,10 @@ export const ProductCard = ({ product }) => {
 
                 <div className="flex items-center my-2">
                     {Array.from({ length: rating }).map((_, index) => (
-                        <i className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
+                        <i key={`full-${index}`} className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
                     ))}
                     {Array.from({ length: 5-rating }).map((_, index) => (
-                        <i className="text-lg bi bi-star text-yellow-500 mr-1"></i>
+                        <i key={`empty-${index}`} className="text-lg bi bi-star text-yellow-500 mr-1"></i>
                     ))}
                     
                 </div>
