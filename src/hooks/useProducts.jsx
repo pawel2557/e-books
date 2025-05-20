@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
 export const useProducts = (sqlQuery) => {
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,10 +15,10 @@ export const useProducts = (sqlQuery) => {
 
       if (error) {
         console.error("Fetch error:", error.message);
-        setProducts([]);
+        setData([]);
       } else {
         const result = data?.[0]?.result;
-        setProducts(Array.isArray(result) ? result : []);
+        setData(Array.isArray(result) ? result : []);
       }
 
       setLoading(false);
@@ -27,5 +27,5 @@ export const useProducts = (sqlQuery) => {
     fetchData();
   }, [sqlQuery]);
 
-  return { products, loading };
+  return { data, loading };
 };
