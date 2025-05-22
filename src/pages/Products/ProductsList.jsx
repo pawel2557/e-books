@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
-import { useProducts } from "../../hooks/useProducts";
+import { useQuery } from "../../hooks/useQuery";
 import { useLocation } from "react-router-dom";
 import { useTitle } from "../../hooks/useTitle";
 import { useFilter } from "../../context/FilterContext";
@@ -17,7 +17,7 @@ export const ProductsList = () => {
     query = `SELECT * FROM products WHERE name ILIKE '%${searchTerm}%'`;
   }
   const [show, setShow] = useState(false);
-  const { data, loading } = useProducts(query);
+  const { data, loading } = useQuery(query);
   useEffect(() => {
     initialProductList(data);
   }, [data]);

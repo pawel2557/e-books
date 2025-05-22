@@ -1,4 +1,4 @@
-import { useProducts } from "../hooks/useProducts"
+import { useQuery } from "../hooks/useQuery"
 import { useParams } from "react-router-dom";
 import { useTitle } from "../hooks/useTitle";
 import { useCart } from "../context";
@@ -8,7 +8,7 @@ import { useState } from "react";
 export const ProductDetail = () => {
   const { cartList, addToCart, removeFromCart } = useCart();
   const { id } = useParams();
-  const { data, loading } = useProducts(`SELECT * FROM products WHERE id = ${id}`);
+  const { data, loading } = useQuery(`SELECT * FROM products WHERE id = ${id}`);
   const product = data?.[0];
   console.log(product);
   useTitle(product ? `${product.name}` : "Loading...");

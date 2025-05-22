@@ -1,8 +1,8 @@
 
 import { ProductCard } from "../../../components";
-import { useProducts } from "../../../hooks/useProducts";
+import { useQuery } from "../../../hooks/useQuery";
 export const FeaturedProducts = () => {
-  const { data, loading } = useProducts("SELECT * FROM products WHERE id IN (SELECT id FROM featured_products)");
+  const { data, loading } = useQuery("SELECT * FROM products WHERE id IN (SELECT id FROM featured_products)");
   if (loading) return <p>Loading...</p>;
   if (!Array.isArray(data)) return <p>No data</p>;
 
