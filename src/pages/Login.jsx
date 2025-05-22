@@ -1,29 +1,25 @@
 import { useRef } from "react";
-import { supabase } from "../lib/supabaseClient";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 export const Login = () => {
     const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
     async function handleLogin(event) {
         event.preventDefault();
-        const authDetail = {
-            email: email.current.value,
-            password: password.current.value
-        }
-        const { data, error } = await supabase.auth.signInWithPassword(authDetail)
 
-        if (error) {
-            toast.error(error.message, { position: "top-center" });
-        } else {
+        try {
+            await loginUser({
+                email: email.current.value,
+                password: password.current.value
+            });
+
             toast.success("Logged in successfully!", { position: "top-center" });
             navigate("/products");
-            sessionStorage.setItem("access_token", data.session.access_token);
-            sessionStorage.setItem("user_id", data.user.id);
-            sessionStorage.setItem("user_email", data.user.email);
+        } catch (error) {
+            toast.error(error.message, { position: "top-center" });
         }
-
     }
     return (
         <main>

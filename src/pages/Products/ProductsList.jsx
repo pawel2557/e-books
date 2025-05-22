@@ -19,10 +19,9 @@ export const ProductsList = () => {
   const [show, setShow] = useState(false);
   const { data, loading } = useProducts(query);
   useEffect(() => {
-    if (data.length > 0) {
-      initialProductList(data);
-    }
+    initialProductList(data);
   }, [data]);
+
   if (loading) return <p>Loading...</p>;
   return (
     <main>
@@ -40,6 +39,9 @@ export const ProductsList = () => {
           {productList.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
+          {!loading && data.length === 0 && (
+            <p className="text-center text-slate-400 mt-10">No products found.</p>
+          )}
         </div>
       </section>
       {show && <FilterBar setShow={setShow} />}
