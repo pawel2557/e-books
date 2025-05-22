@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabaseClient";
 
-export const DropdownLoggedIn = ({setDropdown}) => {
+export const DropdownLoggedIn = ({ setDropdown }) => {
     const navigate = useNavigate();
-    function handleLogout(){
+    async function handleLogout() {
+        await supabase.auth.signOut(); 
         sessionStorage.removeItem("access_token");
         sessionStorage.removeItem("user_email");
         sessionStorage.removeItem("user_id");
@@ -17,10 +19,10 @@ export const DropdownLoggedIn = ({setDropdown}) => {
             </div>
             <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
                 <li>
-                    <Link onClick={()=>setDropdown(false)} to="/products" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All eBooks</Link>
+                    <Link onClick={() => setDropdown(false)} to="/products" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All eBooks</Link>
                 </li>
                 <li>
-                    <Link onClick={()=>setDropdown(false)} to="/dashboard" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
+                    <Link onClick={() => setDropdown(false)} to="/dashboard" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
                 </li>
             </ul>
             <div className="py-1">

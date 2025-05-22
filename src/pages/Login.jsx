@@ -22,7 +22,6 @@ export const Login = () => {
             sessionStorage.setItem("access_token", data.session.access_token);
             sessionStorage.setItem("user_id", data.user.id);
             sessionStorage.setItem("user_email", data.user.email);
-            console.log(data);
         }
 
     }

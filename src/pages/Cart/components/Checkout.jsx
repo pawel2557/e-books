@@ -1,7 +1,78 @@
+import { useEffect, useState } from "react";
 import { useCart } from "../../../context"
+import { supabase } from "../../../lib/supabaseClient";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Checkout = ({ setCheckout }) => {
-    const { total } = useCart();
+    const { cartList, total, clearCart } = useCart();
+    const [user, setUser] = useState({});
+    const navigate = useNavigate();
+    useEffect(() => {
+        async function getUser() {
+            const {
+                data: { user },
+                error: userError
+            } = await supabase.auth.getUser();
+
+            if (userError) {
+                console.error("User fetch error:", userError.message);
+                return;
+            }
+
+            const { data: profile, error: profileError } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", user.id)
+                .single();
+
+            if (profileError) {
+                console.error("Profile fetch error:", profileError.message);
+            } else {
+                console.log("Profile:", profile);
+                setUser(profile);
+                
+            }
+        }
+        getUser();
+    }, []);
+    async function handleOrderSubmit(event) {
+        event.preventDefault();
+
+        const {
+            data: { user: authUser },
+            error: authError
+        } = await supabase.auth.getUser();
+
+        if (authError || !authUser) {
+            console.error('Błąd pobierania użytkownika:', authError.message);
+            return;
+        }
+
+        const order = {
+            id: uuidv4(),
+            user_id: authUser.id,
+            email: authUser.email,
+            total: total,
+            items: cartList,
+            quantity: cartList.length
+        };
+
+        const { error: insertError } = await supabase
+            .from('orders')
+            .insert([order]);
+
+        if (insertError) {
+            toast.error('Error with your order:', insertError.message);
+            navigate("/order-summary", {state: {status: false}});
+        } else {
+            console.log('Order saved!', order);
+            clearCart();
+            toast.success("Made an order!");
+            navigate("/order-summary", {state: {status: true, data: order}});
+        }
+    }
     return (
         <section>
             <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
@@ -18,14 +89,14 @@ export const Checkout = ({ setCheckout }) => {
                             <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                                 <i className="bi bi-credit-card mr-2"></i>CARD PAYMENT
                             </h3>
-                            <form className="space-y-6" >
+                            <form onSubmit={handleOrderSubmit} className="space-y-6" >
                                 <div>
                                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Name:</label>
-                                    <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value="Shubham Sarda" disabled required="" />
+                                    <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={user.name || ""} disabled required="" />
                                 </div>
                                 <div>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email:</label>
-                                    <input type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value="shubham@example.com" disabled required="" />
+                                    <input type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={user.email || ''} disabled required="" />
                                 </div>
                                 <div>
                                     <label htmlFor="card" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Card Number:</label>
