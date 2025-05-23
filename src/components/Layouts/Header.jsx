@@ -23,7 +23,7 @@ export const Header = () => {
       <nav className="bg-white dark:bg-gray-900">
         <div className="border-b border-slate-200 dark:border-b-0 flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-3">
           <Link to="/" className="flex items-center">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">E-books</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">eBooks</span>
           </Link>
           <div className="flex items-center relative">
             <span onClick={() => setDarkMode(!darkMode)} className="cursor-pointer text-xl text-gray-700 dark:text-white mr-5 bi bi-gear-wide-connected"></span>
