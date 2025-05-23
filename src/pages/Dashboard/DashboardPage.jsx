@@ -41,7 +41,7 @@ export const DashboardPage = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <main><section> <p className="text-2xl text-center font-semibold dark:text-slate-100 my-10 underline underline-offset-8">Loading...</p></section></main> ;
 
   return (
     <main>

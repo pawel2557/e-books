@@ -22,7 +22,7 @@ export const ProductsList = () => {
     initialProductList(data);
   }, [data]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <main><p className="text-2xl font-semibold dark:text-slate-100 mb-5">Loading...</p></main>;
   return (
     <main>
       <section className="my-5">
